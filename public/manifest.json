@@ -1,0 +1,31 @@
+{   "id": "index.html",
+	"name": "Repa_ir App Cliente",
+	"short_name": "repa_ir", 
+	"description":"Servicio de soporte tecnico y reparaciones a domicilio",
+	"scope":"/",
+	"start_url":"/",
+	"display": "standalone",
+	"background_color":"#000000",
+	"theme_color": "#317EFB",
+	"orientation": "portrait-primary",
+	"prefer_related_applications": true,
+	"icons":[
+		{
+			"src": "./icons/icons96.png",
+			"type":"image/png", "sizes":"96x96"
+		},
+			{
+			"src": "./icons/icons192.png",
+			"type":"image/png", "sizes":"192x192"
+		},
+			{
+			"src": "./icons/icons384.png",
+			"type":"image/png", "sizes":"384x384"
+		},
+			{
+			"src": "./icons/icons512.png",
+			"type":"image/png", "sizes":"512x512"
+		}
+	]
+
+}
