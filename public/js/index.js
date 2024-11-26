@@ -27,7 +27,7 @@ const step2 = document.getElementById('step2');
      description.value, 
      estatus
      );
-    swal('Solicitud exitosa', userId.value);
+    window.alert('Solicitud exitosa', userId.value);
     locationForm.hidden = true;
     step2.hidden = false;
     QR_CODE.makeCode(userId);
