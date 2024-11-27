@@ -22,9 +22,10 @@ h1 {
  font-size:2em;
  margin:.67em 0
 }hr {
-    border: 1px solid #9BFAB0; border-radius: 1.4px;
+    border: 3.4px solid #9BFAB0; border-radius: 1.4px;
  -webkit-box-sizing:content-box;
  box-sizing:content-box;
+ box-shadow: 0.8px 0.8px 0.3px black;
  height:0;
  overflow:visible}
 
