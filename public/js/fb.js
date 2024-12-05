@@ -47,9 +47,9 @@ console.log('generando usuario...')}
 })();
 
 export const userLocationRef = function
-(userId, number, location, country, description, estatus) {
+(userId, number, location, description, estatus) {
  const docRef = addDoc(collection(db, 'usersLocations'),
-{userId, number, location, country, description, estatus});
+{userId, number, location, description, estatus});
   console.log("Documento guardado exitosamente usuario... ", userId);
 }
 export const onGetLocations = (callback) =>

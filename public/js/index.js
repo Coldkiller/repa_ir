@@ -15,7 +15,6 @@ const step2 = document.getElementById('step2');
     const userId = locationForm['userId'];
     const number = locationForm['number'];
     const location = locationForm['location'];
-    const country = locationForm['country'];
     const description = locationForm['description'];
     var estatus = "espera de respuesta"
     userLocationRef
@@ -23,7 +22,6 @@ const step2 = document.getElementById('step2');
      userId.value,
      number.value, 
      location.value, 
-     country.value, 
      description.value, 
      estatus
      );

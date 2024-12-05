@@ -5,7 +5,6 @@ const assets = [
 "/css/pure-min.css",
 "/js/index.js",
 "/js/fb.js",
-"/js/sa.js",
 "/js/qrcode.min.js",
 "/icons/cc.png"
 ]
