@@ -1,82 +1,82 @@
 <!DOCTYPE html>
 <html lang="es-Es"><head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Servicio de tecnicos especialistas a domicilio y remoto">
-    <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon" href=icons/icons192.png">
-    <meta name="theme-color" content="#317EFB">
-    <meta name="apple-mobile-web-app-status-bar" content="#db4938">
-    <title>Repa_ir | Servicio técnico a domicilio</title>
-    <link type="text/css" href="css/pure-min.css" rel="stylesheet" media="screen,projection">
-        <style scoped="">	
-        .button-secondary {background: #70CAEE;}
-        .button-success,
-        .button-xlarge {font-size: 120%;}
-        .button-success {background:#9BFAB0;}
-        .footer {width: 100%; background-color:solid #9BFAB0; display: block;}
-       </style>
-  </head>
-  <body>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://repair-cliente.web.app; script-src 'self' https://repair-cliente.web.app https://www.gstatic.com https://www.googleapis.com 'unsafe-inline';
+  style-src 'self' https://repair-cliente.web.app 'unsafe-inline';img-src 'self' https://repair-cliente.web.app data: https:;font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://repair-cliente.web.app https://www.googleapis.com https://www.gstatic.com https://firebase.googleapis.com https://securetoken.googleapis.com 
+https://firestore.googleapis.com/
+  https://identitytoolkit.googleapis.com https://apis.google.com;frame-src 'self' https://*.firebaseapp.com;
+  object-src 'none';base-uri 'self';form-action 'self'; upgrade-insecure-requests; block-all-mixed-content;
+  "> 
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Servicio de tecnicos especialistas a domicilio y remoto">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/icons192.png" loading="lazy">
+  <meta name="theme-color" content="#317EFB">
+  <meta name="apple-mobile-web-app-status-bar" content="#db4938">
+  <title>Repa_ir | Servicio técnico a domicilio</title>
+  <link type="text/css" href="css/pure-min.css" rel="stylesheet" media="screen,projection">
+  <script type="text/javascript" src="js/sa2.min.js" defer></script>
+</head>
+<body>
   <div class="pure-menu pure-menu-horizontal">
     <a href="https://repair-cliente.web.app/" class="pure-menu-heading pure-menu-link">🛠️ Repa_ir</a>
-    <hr></div>
-<div class="pure-g">
-  <div id="step1" class="pure-u-1-1">
-  <form class="pure-form" id="location-form">
- <fieldset class="pure-group">
-    <input readonly="readonly" class="pure-input-1-2" type="text" name="userId" id="userId" placeholder="Creando clave..." required="" value="Ld0lnpaJT9dV6Qgr4FIkTLOzwvp2">
-    <br>
-    <input type="number" name="number" id="number" placeholder="Numero de contacto" required="">
-    <br>
-    <input type="text" name="location" id="location" placeholder="Dirección" required="">
-       <br>
-    <textarea id="description" placeholder="Descripción de el problema"></textarea>
-  <button type="submit" id="saveLocation" class="button-xlarge  button-success pure-button">
-   Solicitar
-  </button>   
-  </fieldset>
-</form>
-  </div>
-  <div id="step2" class="pure-u-1-1" hidden="">
-    <div id="qrcode"></div><br>
-   <button id="btnGuardar" class="button  button-success pure-button">
-   Guardar QR
-  </button>   
-    <h4>Estado de solicitud:</h4>
-     <button id="estatus" class="button-xlarge button-secondary pure-button ">
-        En espera
+  <hr></div>
+  <div class="pure-g">
+    <div id="step1" class="pure-u-1-2">
+      <form class="pure-form" id="location-form">
+        <fieldset class="pure-group">
+          <label for="userId">Clave de Usuario </label>
+          <input readonly="readonly" class="pure-input-1-1" type="text" name="userId" id="userId" placeholder="Creando clave..." aria-label="userId " required="" value="">
+          <br>
+          <label for="number">Número de Contacto </label>
+          <input type="number" name="number" id="number" placeholder="Numero de contacto" aria-label="number" required="">
+          <br>
+          <label for="location">Direcci&oacute;n  </label>
+          <input type="text" name="location" id="location" placeholder="Dirección" aria-label="location" required="">
+          <br>
+          <label for="description">Descripción del Problema </label>
+          <textarea id="description" placeholder="Descripción de el problema" aria-label="description" required></textarea>
+          <button type="submit" id="saveLocation" class="button-xlarge  button-success pure-button" aria-label="Solicitar servicio" >
+          Solicitar
+          </button>
+        </fieldset>
+      </form>
+    </div>
+    <div id="step2" class="pure-u-1-1" hidden="">
+      <div id="qrcode"></div><br>
+      <button id="btnGuardar" class="button  button-success pure-button">
+      Guardar QR
       </button>
+      <h4>Estado de solicitud:</h4>
+      <button id="estatus" class="button-xlarge button-secondary pure-button ">
+      En espera
+      </button>
+    </div>
   </div>
-</div>
   <div class="footer-bottom">
-  2022. Reparar es la cuarta R de la ecología. <br>
-    <a href="https://marcos-clemente.web.app/">Marcos Clemente Bonilla</a>
+    2024. Reparar es la cuarta R de la ecología. <br> <a href="https://marcos-clemente.web.app/">Marcos Clemente Bonilla</a>
     <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
-      <img alt="Licencia Creative Commons" style=" border-width:0;
-       width: 80px;
-       height: 15px; " src="icons/cc.png">
+      <img class="pure-img" alt="Licencia Creative Commons" style=" border-width:0;
+      width: 120px;
+      height: 23px; "
+      src="icons/cc.webp" loading="lazy">
     </a>
   </div>
-
-<script type="text/javascript">
+  <script type="text/javascript">
   window.addEventListener("load", () => {
-    if ("serviceWorker" in navigator && 'PushManager' in window) {
-      navigator.serviceWorker.register("sw.js")
-        .then(function (swReg) {
-          console.log('Registrando servidor de trabajo... ok', swReg);
-          swRegistration = swReg;
-        })
-        .catch(function (error) {
-          window.alert('Error al registrar el servidor de trabajo... ', error);
-        });
-    } else {
-      window.alert('mensajes push no soportados');
-    };    
-});
-</script>
-  <script type="module" src="js/index.js"></script>
-  <script type="text/javascript" src="js/qrcode.min.js"></script>
-  
-
+  if ("serviceWorker" in navigator && 'PushManager' in window) {
+  navigator.serviceWorker.getRegistrations().then((registrations) =>{
+  if (registrations.length === 0){
+  navigator.serviceWorker.register("sw.js")
+  .then((swReg) => console.log("servidor registrado... ok", swReg))
+  .catch((error)=> console.error("Error",error ));
+  }
+  })
+  } else {
+  swal.fire('navegador no compatible actualizar');
+  };
+  });
+  </script>
+  <script type="module"src="js/index.js" defer></script>
+  <script type="text/javascript" src="js/qrcode.min.js" defer></script>
 </body></html>

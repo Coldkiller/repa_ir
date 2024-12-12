@@ -1,6 +1,6 @@
 {   "id": "index.html",
 	"name": "Repa_ir App Cliente",
-	"short_name": "repa_ir", 
+	"short_name": "repa_ir",
 	"description":"Servicio de soporte tecnico y reparaciones a domicilio",
 	"scope":"/",
 	"start_url":"/",
