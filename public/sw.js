@@ -4,7 +4,6 @@ const ASSETS = [
   "index.html",
   "/css/pure-min.css",
   "/js/index.js",
-  "/js/fb.js",
   "/js/sa2.min.js",
   "/js/qrcode.min.js",
   "/icons/cc.webp",
