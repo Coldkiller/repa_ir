@@ -8,12 +8,12 @@ https://firestore.googleapis.com/
   object-src 'none';base-uri 'self';form-action 'self'; upgrade-insecure-requests; block-all-mixed-content;
   "> 
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Servicio de tecnicos especialistas a domicilio y remoto">
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="icons/icons192.png" loading="lazy">
   <meta name="theme-color" content="#317EFB">
   <meta name="apple-mobile-web-app-status-bar" content="#db4938">
-  <title>Repa_ir | Servicio técnico a domicilio</title>
+  <title>Servicio de Reparación de Electrónica - Repair Cliente</title>
+<meta name="description" content="Reparamos tus dispositivos electrónicos de forma rápida y económica. Consulta nuestros servicios de reparación ahora.">
   <link type="text/css" href="css/pure-min.css" rel="stylesheet" media="screen,projection">
   <script type="text/javascript" src="js/sa2.min.js" defer></script>
 </head>
@@ -21,9 +21,9 @@ https://firestore.googleapis.com/
   <div class="pure-menu pure-menu-horizontal">
     <a href="https://repair-cliente.web.app/" class="pure-menu-heading pure-menu-link">🛠️ Repa_ir</a>
   <hr></div>
-  <div class="pure-g">
-    <div id="step1" class="pure-u-1-2">
-      <form class="pure-form" id="location-form">
+    <div class="pure-g" id="step1">
+ <div  class="pure-u-3-5">
+        <form class="pure-form" id="location-form">
         <fieldset class="pure-group">
           <label for="userId">Clave de Usuario </label>
           <input readonly="readonly" class="pure-input-1-1" type="text" name="userId" id="userId" placeholder="Creando clave..." aria-label="userId " required="" value="">
@@ -41,15 +41,28 @@ https://firestore.googleapis.com/
           </button>
         </fieldset>
       </form>
+ </div>
+  <div  class="pure-u-3-5">
+   <h1>Reparación de dispositivos electrónicos</h1>
+<p>
+Tus datos a salvo, el planeta también. Reparaciones rápidas, ecológicas y con copia de seguridad. ¡La solución perfecta para tu dispositivo!
+</p>
+ </div>
     </div>
-    <div id="step2" class="pure-u-1-1" hidden="">
-      <div class="pure-u-1-2" id="qrcode"></div><br>
+    <div id="step2" class="pure-g" hidden="">
+      <div class="pure-u-1-2">
+        <h3>Detalles de solicitud:</h3>
+        <div  id="data-list"></div>
+      </div>
+      
+      <div class="pure-u-1-2">
+          <div  id="qrcode"></div><br>
       <button id="btnGuardar" class="button  button-success pure-button">
       Guardar QR
       </button> <br>
-      <div id="data-list"></div>
+      </div>
+    
     </div>
-  </div>
   <div class="footer-bottom">
     2024. Reparar es la cuarta R de la ecología.
     <br> <br>

@@ -12,6 +12,7 @@ import {
   setDoc,
   getDoc,
   enableIndexedDbPersistence,
+  onSnapshot,
 } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
 // Configuración de Firebase
@@ -34,26 +35,31 @@ const auth = getAuth();
 enableIndexedDbPersistence(db)
   .then(() => console.log("Base de datos offline habilitada"))
   .catch((err) => {
-    if (err.code === "failed-precondition") {
-      console.warn("Múltiples pestañas abiertas");
-    } else if (err.code === "unimplemented") {
-      swal.fire("Este navegador no es compatible con el modo fuera de línea");
+    switch (err.code) {
+      case "failed-precondition":
+        console.warn("Múltiples pestañas abiertas");
+        break;
+      case "unimplemented":
+        Swal.fire("Este navegador no es compatible con el modo fuera de línea");
+        break;
+      default:
+        console.error("Error al habilitar la persistencia offline:", err);
     }
   });
 
 // Iniciar sesión anónima
-function initializeAnonymousUser() {
+const initializeAnonymousUser = () => {
   signInAnonymously(auth)
     .then(() => console.log("Autenticado anónimamente"))
     .catch((error) => console.error("Error en la autenticación:", error));
-}
+};
 
 // Evento de cambio de estado del usuario
 onAuthStateChanged(auth, async (user) => {
   if (user) {
     const uid = user.uid;
     console.log("Usuario anónimo creado:", uid);
-    document.getElementById("userId").value = uid;
+    document.querySelector("#userId").value = uid;
     await checkExistingData(uid);
   } else {
     console.log("Generando usuario...");
@@ -77,23 +83,32 @@ const checkExistingData = async (userId) => {
 };
 
 // Función para guardar datos en Firestore offline
-const saveUserLocation = async (userId, number, location, description, estatus) => {
+const saveUserLocation = async (userId, number, location, description, stat) => {
   try {
     const docRef = doc(db, "usersLocations", userId);
-    const data = { userId, number, location, description, estatus };
+    const timestamp = new Date().toISOString();
+    const data = { userId, number, location, description, stat, timestamp };
     await setDoc(docRef, data);
-    swal.fire("Solicitud exitosa", `Datos guardados para el usuario ${userId}`);
+
+    Swal.fire({
+      position: "top-end",
+      icon: "success",
+      title: "Solicitud exitosa",
+      showConfirmButton: false,
+      timer: 2000,
+    });
+
     showQRCode(userId, data);
   } catch (error) {
     console.error("Error al guardar datos:", error);
-    swal.fire("Error al guardar los datos");
+    Swal.fire("Error al guardar los datos");
   }
 };
 
 // Función para mostrar el QR, ocultar el formulario e insertar una lista con los datos
 const showQRCode = (userId, data) => {
-  const locationForm = document.getElementById("location-form");
-  const step2 = document.getElementById("step2");
+  const step1 = document.querySelector("#step1");
+  const step2 = document.querySelector("#step2");
   const QR_CODE = new QRCode("qrcode", {
     width: 220,
     height: 220,
@@ -103,28 +118,42 @@ const showQRCode = (userId, data) => {
   });
 
   // Ocultar el formulario y mostrar el QR
-  locationForm.hidden = true;
+  step1.hidden = true;
   step2.hidden = false;
-
   setTimeout(() => QR_CODE.makeCode(userId), 10);
 
-  // Insertar lista con los datos al lado del QR
-  const dataList = document.getElementById("data-list");
-  dataList.innerHTML = `
-    <ul>
-      <li><strong>Id:</strong> ${data.userId}</li>
-      <li><strong>Número:</strong> ${data.number}</li>
-      <li><strong>Dirección:</strong> ${data.location}</li>
-      <li><strong>Descripción:</strong> ${data.description}</li>
-      <li><strong>Estatus:</strong> ${data.estatus}</li>
-    </ul>
-  `;
+  // Insertar lista con los datos al lado del QR sin usar innerHTML
+  const dataList = document.querySelector("#data-list");
+  dataList.replaceChildren(); // Limpia contenido previo
+
+  const ul = document.createElement("ul");
+
+  const createListItem = (label, value) => {
+    const li = document.createElement("li");
+    li.innerHTML = `<strong>${label}:</strong> ${value}`;
+    return li;
+  };
+
+  ul.appendChild(createListItem("Id", data.userId));
+  ul.appendChild(createListItem("Número", data.number));
+  ul.appendChild(createListItem("Dirección", data.location));
+  ul.appendChild(createListItem("Descripción", data.description));
+  ul.appendChild(createListItem("Fecha de Creación", data.timestamp));
+
+  const liStat = document.createElement("li");
+  liStat.innerHTML = `<strong>Estatus:</strong> <button class="button-primary pure-button">${data.stat}</button>`;
+  ul.appendChild(liStat);
+
+  dataList.appendChild(ul);
+
+  // Iniciar escucha de cambios en el stat
+  listenToStatusChange(userId);
 };
 
 // Lógica del formulario y QR
 window.addEventListener("load", () => {
-  const locationForm = document.getElementById("location-form");
-  const btnGuardar = document.getElementById("btnGuardar");
+  const locationForm = document.querySelector("#location-form");
+  const btnGuardar = document.querySelector("#btnGuardar");
 
   // Función para validar el formulario
   const validateForm = () => {
@@ -144,7 +173,7 @@ window.addEventListener("load", () => {
     }
 
     if (errorMessages.length > 0) {
-      swal.fire(errorMessages.join("\n"));
+      Swal.fire(errorMessages.join("\n"));
       return false;
     }
 
@@ -161,9 +190,9 @@ window.addEventListener("load", () => {
     const number = locationForm["number"].value.trim();
     const location = locationForm["location"].value.trim();
     const description = locationForm["description"].value.trim();
-    const estatus = "espera de respuesta";
+    const stat = "primary";
 
-    await saveUserLocation(userId, number, location, description, estatus);
+    await saveUserLocation(userId, number, location, description, stat);
   });
 
   // Evento para descargar el código QR
@@ -175,6 +204,27 @@ window.addEventListener("load", () => {
     enlace.href = dataURL;
     enlace.click();
   });
-
-  initializeAnonymousUser();
 });
+
+// Función para escuchar cambios en tiempo real
+const listenToStatusChange = (userId) => {
+  const docRef = doc(db, "usersLocations", userId);
+  let lastStat = null;
+
+  onSnapshot(docRef, (docSnap) => {
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+
+      // Verificar si el stat ha cambiado desde el último valor
+      if (data.stat && data.stat !== lastStat) {
+        lastStat = data.stat;
+        const statElement = document.querySelector("#data-list li:nth-child(6)");
+        if (statElement) {
+          statElement.innerHTML = `<strong>Estatus:</strong> <button class="button-${data.stat} pure-button">${data.stat}</button>`;
+        }
+      }
+    } else {
+      console.warn("El documento no existe.");
+    }
+  });
+};
