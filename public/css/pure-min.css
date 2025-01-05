@@ -1,24 +1,23 @@
 html {
   font-family: Arial, sans-serif;
-  line-height: 1.5; /* Increased line-height for better readability */
+  line-height: 1.5;
   -webkit-text-size-adjust: 100%;
 }
 
 :root {
-  --color-primary: #007bff; /* Changed to a more accessible blue */
-  --color-secondary: #ffc107; /* Changed to a more contrasting yellow */
-  --color-success: #28a745; /* Green for success */
-  --color-error: #dc3545; /* Red for error */
+  --color-espera: #007bff; 
+  --color-atencion: #ffc107; 
+  --color-correcto: #28a745; 
+  --color-error: #dc3545; 
   --color-text: #fff;
-  --color-background: #f8f9fa; /* Lighter background for better contrast */
+  --color-background: #f8f9fa; 
   --color-border: #ced4da;
 }
-
 body {
   background-color: var(--color-background);
-  color: #333; /* Darker text for better contrast */
+  color: #333; 
   margin: 0;
-  font-size: 16px; /* Base font size for better readability */
+  font-size: 16px; 
 }
 
 main {
@@ -28,7 +27,7 @@ main {
 h1 {
   font-size: 2em;
   margin: 0.67em 0;
-  color: #333; /* Darker heading color */
+  color: #333; 
 }
 hr {
   border: 3.4px solid #9BFAB0;
@@ -40,7 +39,7 @@ hr {
 }
 a {
   font-size: 23px;
-  color: var(--color-primary);
+  color: var(--color-espera);
   text-decoration: none;
 }
 a:hover {
@@ -62,12 +61,12 @@ input, textarea, select {
   margin-bottom: 15px;
 }
 input:focus, textarea:focus, select:focus {
-  border-color: var(--color-primary);
+  border-color: var(--color-espera);
   outline: none;
-  box-shadow: 0 0 5px var(--color-primary);
+  box-shadow: 0 0 5px var(--color-espera);
 }
 button {
-  background-color: var(--color-primary);
+  background-color: var(--color-espera);
   color: var(--color-text);
   border: none;
   border-radius: 5px;
@@ -80,16 +79,16 @@ button {
 button:hover {
   opacity: 0.9;
 }
-.button-primary {
-  background-color: var(--color-primary);
+.button-espera {
+  background-color: var(--color-espera);
 }
 
-.button-secondary {
-  background-color: var(--color-secondary);
+.button-atencion {
+  background-color: var(--color-atencion);
 }
 
-.button-success {
-  background-color: var(--color-success);
+.button-correcto {
+  background-color: var(--color-correcto);
 }
 
 .button-error {
@@ -135,3 +134,18 @@ button:hover {
   color: #666;
   font-size: 0.875em;
 }
+ .button-xlarge {
+            font-size: 125%;
+        }
+ .button-primary {
+    background-color: #007bff;
+  }
+  .button-secondary {
+    background-color: #ffc107;
+  }
+  .button-success {
+    background-color: #28a745;
+  }
+  .button-danger {
+    background-color: #dc3545;
+  }

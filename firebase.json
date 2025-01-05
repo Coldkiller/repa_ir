@@ -13,7 +13,51 @@
     "rewrites": [
       {
         "source": "**",
-        "destination": "/index.html"
+        "destination": "/index.html",
+        "headers": [
+          {
+            "key": "Content-Security-Policy",
+            "value": "default-src 'self' https://repair-cliente.web.app; script-src 'self' https://repair-cliente.web.app https://www.gstatic.com https://www.googleapis.com 'unsafe-inline'; style-src 'self' https://repair-cliente.web.app 'unsafe-inline'; img-src 'self' https://repair-cliente.web.app data: https:; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://repair-cliente.web.app https://www.googleapis.com https://www.gstatic.com https://firebase.googleapis.com https://securetoken.googleapis.com https://firestore.googleapis.com/ https://identitytoolkit.googleapis.com https://apis.google.com; frame-src 'self' https://*.firebaseapp.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests; block-all-mixed-content;"
+          }
+        ]
+      }
+    ],
+    "headers": [
+      {
+        "source": "**/*.js",
+        "headers": [
+          {
+            "key": "Content-Encoding",
+            "value": "br"
+          }
+        ]
+      },
+      {
+        "source": "**/*.css",
+        "headers": [
+          {
+            "key": "Content-Encoding",
+            "value": "br"
+          }
+        ]
+      },
+      {
+        "source": "**/*.png",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=31536000, immutable"
+          }
+        ]
+      },
+      {
+        "source": "**/*.jpg, jpeg, webp, png, gif, svg",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=31536000, immutable"
+          }
+        ]
       }
     ]
   }

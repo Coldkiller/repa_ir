@@ -25,8 +25,8 @@ https://firestore.googleapis.com/
  <div  class="pure-u-3-5">
         <form class="pure-form" id="location-form">
         <fieldset class="pure-group">
-          <label for="userId">Clave de Usuario </label>
-          <input readonly="readonly" class="pure-input-1-1" type="text" name="userId" id="userId" placeholder="Creando clave..." aria-label="userId " required="" value="">
+          <label for="userId">Clave</label>
+          <input readonly="readonly" class="pure-input-1-2" type="text" name="userId" id="userId" placeholder="Creando clave..." aria-label="userId " required="" value="">
           <br>
           <label for="number">Número de Contacto </label>
           <input type="number" name="number" id="number" placeholder="Numero de contacto" aria-label="number" required="">
@@ -37,7 +37,7 @@ https://firestore.googleapis.com/
           <label for="description">Descripción del Problema </label>
           <textarea id="description" placeholder="Descripción de el problema" aria-label="description" required></textarea>
           <button type="submit" id="saveLocation" class="button-xlarge  button-success pure-button" aria-label="Solicitar servicio" >
-          Solicitar
+          Solicitar servicio
           </button>
         </fieldset>
       </form>
@@ -49,19 +49,17 @@ Tus datos a salvo, el planeta también. Reparaciones rápidas, ecológicas y con
 </p>
  </div>
     </div>
-    <div id="step2" class="pure-g" hidden="">
+    <div id="step2" class="pure-g" style="display: none;">
       <div class="pure-u-1-2">
         <h3>Detalles de solicitud:</h3>
         <div  id="data-list"></div>
       </div>
-      
       <div class="pure-u-1-2">
           <div  id="qrcode"></div><br>
-      <button id="btnGuardar" class="button  button-success pure-button">
-      Guardar QR
+      <button id="btnGuardar" class="button-success pure-button button-xlarge">
+      Guardar Clave
       </button> <br>
       </div>
-    
     </div>
   <div class="footer-bottom">
     2024. Reparar es la cuarta R de la ecología.

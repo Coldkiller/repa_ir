@@ -17,13 +17,7 @@ import {
 
 // Configuración de Firebase
 const firebaseConfig = {
-  apiKey: "AIzaSyDuuyGd8NRWXUZu7XPkK0bs0ap8O7anVAg",
-  authDomain: "repair-cliente.firebaseapp.com",
-  projectId: "repair-cliente",
-  storageBucket: "repair-cliente.appspot.com",
-  messagingSenderId: "1082010625756",
-  appId: "1:1082010625756:web:e0c2c70c7a20adc6fe3619",
-  measurementId: "G-73E5M5RSL8",
+ 
 };
 
 // Inicialización de Firebase
@@ -83,7 +77,13 @@ const checkExistingData = async (userId) => {
 };
 
 // Función para guardar datos en Firestore offline
-const saveUserLocation = async (userId, number, location, description, stat) => {
+const saveUserLocation = async (
+  userId,
+  number,
+  location,
+  description,
+  stat,
+) => {
   try {
     const docRef = doc(db, "usersLocations", userId);
     const timestamp = new Date().toISOString();
@@ -105,28 +105,29 @@ const saveUserLocation = async (userId, number, location, description, stat) => 
   }
 };
 
-// Función para mostrar el QR, ocultar el formulario e insertar una lista con los datos
+// Mostrar el QR y datos dinámicamente
 const showQRCode = (userId, data) => {
-  const step1 = document.querySelector("#step1");
-  const step2 = document.querySelector("#step2");
-  const QR_CODE = new QRCode("qrcode", {
+  // Eliminamos elementos previos del formulario y QR
+  const appContainer = document.querySelector("#step1");
+  appContainer.replaceChildren(); // Limpia el contenedor principal
+
+  // Crear contenedor del QR
+  const qrContainer = document.createElement("div");
+  qrContainer.id = "qrcode";
+
+  // Generar el QR Code
+  const QR_CODE = new QRCode(qrContainer, {
     width: 220,
     height: 220,
-    colorDark: "#000000",
-    colorLight: "#70CAEE",
+    colorDark: "#2b2b2c",
+    colorLight: "#f0f1f9",
     correctLevel: QRCode.CorrectLevel.H,
   });
+  QR_CODE.makeCode(userId);
 
-  // Ocultar el formulario y mostrar el QR
-  step1.hidden = true;
-  step2.hidden = false;
-  setTimeout(() => QR_CODE.makeCode(userId), 10);
-
-  // Insertar lista con los datos al lado del QR sin usar innerHTML
-  const dataList = document.querySelector("#data-list");
-  dataList.replaceChildren(); // Limpia contenido previo
-
-  const ul = document.createElement("ul");
+  // Crear lista con los datos
+  const dataList = document.createElement("ul");
+  dataList.id = "data-list";
 
   const createListItem = (label, value) => {
     const li = document.createElement("li");
@@ -134,97 +135,85 @@ const showQRCode = (userId, data) => {
     return li;
   };
 
-  ul.appendChild(createListItem("Id", data.userId));
-  ul.appendChild(createListItem("Número", data.number));
-  ul.appendChild(createListItem("Dirección", data.location));
-  ul.appendChild(createListItem("Descripción", data.description));
-  ul.appendChild(createListItem("Fecha de Creación", data.timestamp));
+  dataList.appendChild(createListItem("Clave", data.userId));
+  dataList.appendChild(createListItem("Número", data.number));
+  dataList.appendChild(createListItem("Dirección", data.location));
+  dataList.appendChild(createListItem("Descripción", data.description));
+  dataList.appendChild(createListItem("Fecha de Creación", data.timestamp));
 
+  // Botón con el estatus dinámico
+  const statButton = document.createElement("button");
+  statButton.className = `button-${data.stat} pure-button`;
+  statButton.textContent = data.stat;
   const liStat = document.createElement("li");
-  liStat.innerHTML = `<strong>Estatus:</strong> <button class="button-primary pure-button">${data.stat}</button>`;
-  ul.appendChild(liStat);
+  liStat.appendChild(statButton);
+  dataList.appendChild(liStat);
 
-  dataList.appendChild(ul);
+  // Agregar contenedores al DOM
+  appContainer.appendChild(qrContainer);
+  appContainer.appendChild(dataList);
 
-  // Iniciar escucha de cambios en el stat
-  listenToStatusChange(userId);
+  // Escuchar cambios de estado
+  listenToStatusChange(userId, statButton);
 };
 
-// Lógica del formulario y QR
-window.addEventListener("load", () => {
-  const locationForm = document.querySelector("#location-form");
-  const btnGuardar = document.querySelector("#btnGuardar");
-
-  // Función para validar el formulario
-  const validateForm = () => {
-    const number = locationForm["number"].value.trim();
-    const location = locationForm["location"].value.trim();
-    const description = locationForm["description"].value.trim();
-    const errorMessages = [];
-
-    if (!/^\d{10}$/.test(number)) {
-      errorMessages.push("El número de contacto debe tener exactamente 10 dígitos.");
-    }
-    if (location.length < 5) {
-      errorMessages.push("La dirección debe tener al menos 5 caracteres.");
-    }
-    if (description.length < 10) {
-      errorMessages.push("La descripción del problema debe tener mínimo 10 caracteres.");
-    }
-
-    if (errorMessages.length > 0) {
-      Swal.fire(errorMessages.join("\n"));
-      return false;
-    }
-
-    return true;
-  };
-
-  // Evento de envío del formulario
-  locationForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    if (!validateForm()) return;
-
-    const userId = locationForm["userId"].value.trim();
-    const number = locationForm["number"].value.trim();
-    const location = locationForm["location"].value.trim();
-    const description = locationForm["description"].value.trim();
-    const stat = "primary";
-
-    await saveUserLocation(userId, number, location, description, stat);
-  });
-
-  // Evento para descargar el código QR
-  btnGuardar.addEventListener("click", () => {
-    const canvas = document.querySelector("#qrcode canvas");
-    const dataURL = canvas.toDataURL();
-    const enlace = document.createElement("a");
-    enlace.download = `${locationForm["userId"].value}.png`;
-    enlace.href = dataURL;
-    enlace.click();
-  });
-});
-
-// Función para escuchar cambios en tiempo real
-const listenToStatusChange = (userId) => {
+// Escucha optimizada de cambios en tiempo real
+const listenToStatusChange = (userId, statButton) => {
   const docRef = doc(db, "usersLocations", userId);
-  let lastStat = null;
 
   onSnapshot(docRef, (docSnap) => {
     if (docSnap.exists()) {
       const data = docSnap.data();
-
-      // Verificar si el stat ha cambiado desde el último valor
-      if (data.stat && data.stat !== lastStat) {
-        lastStat = data.stat;
-        const statElement = document.querySelector("#data-list li:nth-child(6)");
-        if (statElement) {
-          statElement.innerHTML = `<strong>Estatus:</strong> <button class="button-${data.stat} pure-button">${data.stat}</button>`;
-        }
+      if (data.stat) {
+        statButton.className = `button-${data.stat} pure-button`;
+        statButton.textContent = data.stat;
       }
     } else {
       console.warn("El documento no existe.");
     }
   });
+};
+
+// Evento de envío del formulario optimizado
+window.addEventListener("load", () => {
+  const locationForm = document.querySelector("#location-form");
+
+  locationForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const number = locationForm["number"].value.trim();
+    const location = locationForm["location"].value.trim();
+    const description = locationForm["description"].value.trim();
+
+    if (!validateForm(number, location, description)) return;
+
+    const userId = locationForm["userId"].value.trim();
+    const stat = "espera";
+    await saveUserLocation(userId, number, location, description, stat);
+  });
+});
+
+// Validación de formulario reutilizable
+const validateForm = (number, location, description) => {
+  const errorMessages = [];
+
+  if (!/^\d{10}$/.test(number)) {
+    errorMessages.push(
+      "El número de contacto debe tener exactamente 10 dígitos.",
+    );
+  }
+  if (location.length < 5) {
+    errorMessages.push("La dirección debe tener al menos 5 caracteres.");
+  }
+  if (description.length < 10) {
+    errorMessages.push(
+      "La descripción del problema debe tener mínimo 10 caracteres.",
+    );
+  }
+
+  if (errorMessages.length > 0) {
+    Swal.fire(errorMessages.join("\n"));
+    return false;
+  }
+  return true;
 };
