@@ -1,23 +1,20 @@
 // Firebase setup y funciones
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-import {
-  getAuth,
-  signInAnonymously,
-  onAuthStateChanged,
-} from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
-import {
-  getFirestore,
-  collection,
-  doc,
-  setDoc,
-  getDoc,
-  enableIndexedDbPersistence,
-  onSnapshot,
-} from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+import { initializeApp }
+ from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+import {getAuth, signInAnonymously, onAuthStateChanged}
+ from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+import {getFirestore, collection, doc, setDoc, getDoc, enableIndexedDbPersistence,onSnapshot}
+ from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
 // Configuración de Firebase
 const firebaseConfig = {
- 
+  apiKey: "AIzaSyDuuyGd8NRWXUZu7XPkK0bs0ap8O7anVAg",
+  authDomain: "repair-cliente.firebaseapp.com",
+  projectId: "repair-cliente",
+  storageBucket: "repair-cliente.appspot.com",
+  messagingSenderId: "1082010625756",
+  appId: "1:1082010625756:web:e0c2c70c7a20adc6fe3619",
+  measurementId: "G-73E5M5RSL8",
 };
 
 // Inicialización de Firebase
@@ -27,7 +24,9 @@ const auth = getAuth();
 
 // Habilitar la persistencia offline
 enableIndexedDbPersistence(db)
-  .then(() => console.log("Base de datos offline habilitada"))
+  .then(() =>{
+    return db;
+  })
   .catch((err) => {
     switch (err.code) {
       case "failed-precondition":
@@ -44,7 +43,9 @@ enableIndexedDbPersistence(db)
 // Iniciar sesión anónima
 const initializeAnonymousUser = () => {
   signInAnonymously(auth)
-    .then(() => console.log("Autenticado anónimamente"))
+    .then(() => {
+      return auth;
+    })
     .catch((error) => console.error("Error en la autenticación:", error));
 };
 
@@ -56,7 +57,6 @@ onAuthStateChanged(auth, async (user) => {
     document.querySelector("#userId").value = uid;
     await checkExistingData(uid);
   } else {
-    console.log("Generando usuario...");
     initializeAnonymousUser();
   }
 });
@@ -68,8 +68,6 @@ const checkExistingData = async (userId) => {
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
       showQRCode(userId, docSnap.data());
-    } else {
-      console.log("No se encontraron datos previos.");
     }
   } catch (error) {
     console.error("Error al verificar datos:", error);
@@ -117,14 +115,13 @@ const showQRCode = (userId, data) => {
 
   // Generar el QR Code
   const QR_CODE = new QRCode(qrContainer, {
-    width: 220,
-    height: 220,
-    colorDark: "#2b2b2c",
-    colorLight: "#f0f1f9",
+    width: 250,
+    height: 250,
+    colorDark: "#000000",
+    colorLight: "#ffffff",
     correctLevel: QRCode.CorrectLevel.H,
   });
   QR_CODE.makeCode(userId);
-
   // Crear lista con los datos
   const dataList = document.createElement("ul");
   dataList.id = "data-list";
@@ -146,6 +143,8 @@ const showQRCode = (userId, data) => {
   statButton.className = `button-${data.stat} pure-button`;
   statButton.textContent = data.stat;
   const liStat = document.createElement("li");
+  const textStat = document.createTextNode("Estatus: ");
+  liStat.appendChild(textStat);
   liStat.appendChild(statButton);
   dataList.appendChild(liStat);
 
@@ -155,6 +154,9 @@ const showQRCode = (userId, data) => {
 
   // Escuchar cambios de estado
   listenToStatusChange(userId, statButton);
+  statButton.addEventListener("click", () => {
+    QR_CODE.saveCode();
+  });
 };
 
 // Escucha optimizada de cambios en tiempo real
@@ -165,7 +167,7 @@ const listenToStatusChange = (userId, statButton) => {
     if (docSnap.exists()) {
       const data = docSnap.data();
       if (data.stat) {
-        statButton.className = `button-${data.stat} pure-button`;
+        statButton.className =`button-${data.stat} pure-button`;
         statButton.textContent = data.stat;
       }
     } else {
@@ -177,14 +179,11 @@ const listenToStatusChange = (userId, statButton) => {
 // Evento de envío del formulario optimizado
 window.addEventListener("load", () => {
   const locationForm = document.querySelector("#location-form");
-
   locationForm.addEventListener("submit", async (e) => {
     e.preventDefault();
-
     const number = locationForm["number"].value.trim();
     const location = locationForm["location"].value.trim();
     const description = locationForm["description"].value.trim();
-
     if (!validateForm(number, location, description)) return;
 
     const userId = locationForm["userId"].value.trim();
@@ -210,7 +209,6 @@ const validateForm = (number, location, description) => {
       "La descripción del problema debe tener mínimo 10 caracteres.",
     );
   }
-
   if (errorMessages.length > 0) {
     Swal.fire(errorMessages.join("\n"));
     return false;
