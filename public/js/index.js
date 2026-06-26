@@ -178,6 +178,83 @@ const listenToStatusChange = (userId, statButton) => {
 
 // Evento de envío del formulario optimizado
 window.addEventListener("load", () => {
+  // Geolocalización y geocodificación inversa
+const geolocateBtn = document.getElementById("geolocateBtn");
+const locationInput = document.getElementById("location");
+
+if (geolocateBtn) {
+  geolocateBtn.addEventListener("click", () => {
+    if (!navigator.geolocation) {
+      Swal.fire("Error", "Tu navegador no soporta geolocalización.", "error");
+      return;
+    }
+
+    Swal.fire({
+      title: "Obteniendo ubicación...",
+      text: "Por favor espera mientras obtenemos tu dirección.",
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      }
+    });
+
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const { latitude, longitude } = position.coords;
+        try {
+          const address = await getAddressFromCoords(latitude, longitude);
+          if (address) {
+            locationInput.value = address;
+            Swal.fire("Éxito", "Dirección cargada automáticamente.", "success");
+          } else {
+            throw new Error("No se pudo obtener la dirección");
+          }
+        } catch (error) {
+          console.error(error);
+          Swal.fire("Error", "No se pudo convertir las coordenadas a dirección. Intenta escribirla manualmente.", "error");
+        }
+      },
+      (error) => {
+        console.error(error);
+        let msg = "No se pudo obtener tu ubicación.";
+        switch (error.code) {
+          case error.PERMISSION_DENIED:
+            msg = "Permiso denegado. Activa la ubicación en tu dispositivo.";
+            break;
+          case error.POSITION_UNAVAILABLE:
+            msg = "Información de ubicación no disponible.";
+            break;
+          case error.TIMEOUT:
+            msg = "Tiempo de espera agotado.";
+            break;
+        }
+        Swal.fire("Error", msg, "error");
+      }
+    );
+  });
+}
+
+// Función para geocodificación inversa usando Nominatim (OpenStreetMap)
+async function getAddressFromCoords(lat, lng) {
+  const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1`;
+  try {
+    const response = await fetch(url, {
+      headers: {
+        'Accept-Language': 'es', // Para obtener dirección en español
+        'User-Agent': 'RepairClienteApp/1.0' // Identificador requerido por Nominatim
+      }
+    });
+    const data = await response.json();
+    if (data && data.display_name) {
+      // Extraer solo la parte de calle, número, colonia, ciudad (puedes ajustar)
+      return data.display_name;
+    }
+    return null;
+  } catch (error) {
+    console.error("Error en geocodificación:", error);
+    return null;
+  }
+}
   const locationForm = document.querySelector("#location-form");
   locationForm.addEventListener("submit", async (e) => {
     e.preventDefault();
