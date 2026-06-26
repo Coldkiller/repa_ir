@@ -39,7 +39,6 @@ enableIndexedDbPersistence(db)
         console.error("Error al habilitar la persistencia offline:", err);
     }
   });
-
 // Iniciar sesión anónima
 const initializeAnonymousUser = () => {
   signInAnonymously(auth)
@@ -291,4 +290,4 @@ const validateForm = (number, location, description) => {
     return false;
   }
   return true;
-};
+}; 

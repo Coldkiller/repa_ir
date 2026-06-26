@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang=en-En>
-
 <head>
   <meta content="text/html; charset=UTF-8" http-equiv=Content-Type>
   <meta
@@ -27,17 +26,14 @@
   <div class="pure-g" id="step1">
     <div class="pure-u-3-5">
       <div class="pure-u-3-5">
-        <h3>Reparación de dispositivos electrónicos, en tu casa u oficina.</h3>
+        <h5>Reparación de electrónicos, en tu casa u oficina.</h5>
         <div style="font-size:.85em;color:#444;margin-bottom:14px;line-height:1.8;">
-          🔒 Tus datos a salvo, el planeta tambi&eacute;n reparar es la cuarta R ecológica. &nbsp;|♻️&nbsp; Celulares,
-          tablets, laptops y más &nbsp;|&nbsp;
-          🛠️ Reparaciones r&aacute;pidas, ecol&oacute;gicas y respaldo de datos con copia de
-          seguridad.
-
+         |&nbsp; 🔒 Tus datos a salvo, el planeta tambi&eacute;n.<br> 
+         |&nbsp; ♻️ Reparar es la cuarta R ecológica. &nbsp; <br>
+         |&nbsp; 🎮 Celulares, tablets, laptops y más. &nbsp;<br>
+         |&nbsp; 🛠️ Reparaciones r&aacute;pidas, ecol&oacute;gicas con respaldo.
         </div>
       </div>
-
-      <!-- Bloque 1: Identificador del servicio (Pasivo) -->
       <div class="pure-control-group">
         <form class="pure-form" id="location-form">
           <fieldset class="pure-group">
@@ -48,25 +44,24 @@
               required="" value="">
             <span class="pure-form-message-inline">Este código te permitirá rastrear tu reparación en cualquier
               momento.</span>
-
-
             <div class="pure-u-1 pure-u-md-1-2">
               <label for="number">Número de contacto (WhatsApp)</label>
               <input type="tel" name="number" id="number" placeholder="Ej. 56 1213 1653"
                 aria-label="Número de teléfono para coordinar la visita" required="">
               <span class="pure-form-message-inline">Lo usaremos solo para coordinar la llegada del técnico.</span>
             </div>
-            <label for="location">Direcci&oacute;n de recogida y entrega </label> <span class="text-muted"
-              style="font-size: 0.85rem;">(tu
-              privacidad es importante)</span></label>
+       <label id="location-label" for="location">
+  Dirección para la visita del técnico y entrega del equipo
+</label>
+<span id="location-help" class="text-muted" style="font-size: 0.85rem;">
+  Tu dirección está protegida de forma segura y solo se usará para programar tu servicio técnico.
+</span>
             <button type="button" id="geolocateBtn" class="pure-button"
               aria-label="Usar mi ubicación actual para llenar la dirección" style="width:100%;">
               📍 Ubicarme
             </button>
             <input type="text" name="location" id="location" placeholder="Calle, número, colonia, ciudad"
               aria-label="location" required="">
-
-
             <label for="description">Describe el problema
               <span class="pure-form-message-inline">
                 ¿No sabes cómo describirlo?
@@ -77,8 +72,7 @@
             <textarea id="description"
               placeholder="¿Qué le pasa a tu dispositivo? Ej. La pantalla no enciende, el puerto de carga está dañado..."
               aria-label="description" required></textarea>
-
-            <button type="submit" id="saveLocation" class="button-xlarge  button-correcto pure-button"
+            <button type="submit" id="saveLocation" class="button-xlarge  button-correcto pure-button" style="width:100%;"
               aria-label="Confirmar y enviar solicitud de reparación a domicilio">
               Solicitar reparación a domicilio
             </button> <span class="pure-form-message-inline">Tus datos están seguros y solo se usarán para este servicio
@@ -102,12 +96,6 @@
         href="http://creativecommons.org/licenses/by-sa/4.0/">
         <img class="pure-img" alt="Licencia Creative Commons" src="icons/cc.webp" loading="lazy"></a></section>
   </div>
-
-
-
-
-
-  <!-- SECCIÓN DE RESULTADO (Post-solicitud) -->
   <div id="step2" class="pure-g" style="display: none;">
     <div class="pure-u-1 pure-u-md-1-2">
       <h2>Estado de tu solicitud</h2>
