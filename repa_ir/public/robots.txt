@@ -1,3 +1,0 @@
-User-agent: *
-Allow: /
-Sitemap: https://repair-cliente.web.app/sitemap.xml
